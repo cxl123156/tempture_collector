@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.cxl.iot.temperature'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+jar {
+    manifest {
+        attributes ('Main-Class': 'com.cxl.iot.temperature.ApplicationStarter',
+                "Implementation-Title": "Gradle")
+    }
+    from {
+        //添加依懒到打包文件
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+//        configurations.runtime.collect{zipTree(it)}
+    }
+}
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+    }
+    //mavenCentral()
+}
+
+dependencies {
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.65.Final'
+}
+
+test {
+    useJUnitPlatform()
+}
